@@ -1,0 +1,34 @@
+from logging import exception
+
+
+def isPrimeNumber(n):
+    for i in range(2, n):
+        if(n % i == 0):
+            return False
+    return True
+
+def validParameters(integer, mod):
+    if(integer > 0 and mod > 0 and mod > integer and isPrimeNumber(mod)):
+        return True
+    else:
+        return False
+
+def getInverse(integer, mod):
+    if(not validParameters(integer, mod)):
+        raise Exception("a and b must be > 0. b must be > a. a must be")
+
+    modVal = mod
+    def extended_gcd(integer, mod):
+        if integer == 0:
+            return (mod, 0, 1)
+        else:
+            gcd, x, y = extended_gcd(mod % integer, integer)
+            print("("+ str(gcd) + ", " + str(x) + ", " + str(y) + ")")
+            return (gcd, y - (mod // integer) * x, x)
+    tup = extended_gcd(integer, mod)
+    print("End Tuple: " + str(tup))
+    return str(integer) + "^-1(mod " + str(mod) + ") = " + str((modVal + tup[1]) % modVal)
+
+print(getInverse(3,11))
+print("\n\n")
+print(getInverse(3,59))
